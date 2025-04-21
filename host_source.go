@@ -752,9 +752,14 @@ func refreshRing(r *ringDescriber) error {
 		return err
 	}
 
+	hostMap := make(map[string]*HostInfo, len(hosts))
+	for _, host := range hosts {
+		hostMap[host.HostID()] = host
+	}
+
 	prevHosts := r.session.ring.currentHosts()
 
-	for _, h := range hosts {
+	for _, h := range hostMap {
 		if r.session.cfg.filterHost(h) {
 			continue
 		}
